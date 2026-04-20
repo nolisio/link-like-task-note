@@ -1,0 +1,103 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary-light: #c8b6ff;
+  --color-primary: #b08cff;
+  --color-primary-dark: #7a5abf;
+
+  --color-accent-pink: #f490b4;
+  --color-accent-rose: #e890b8;
+  --color-accent-coral: #ff7089;
+
+  --color-surface: rgba(255, 255, 255, 0.55);
+  --color-surface-hover: rgba(255, 255, 255, 0.75);
+  --color-surface-blur: rgba(255, 255, 255, 0.65);
+
+  --color-text-main: #3a3a5c;
+  --color-text-muted: #a099c0;
+  --color-text-purple: #5b4a8a;
+  --color-text-light: #7a6aaa;
+
+  --color-priority-high: #ff7089;
+  --color-priority-medium: #ffb347;
+  --color-priority-low: #7ecba1;
+
+  --font-sans: "M PLUS Rounded 1c", sans-serif;
+}
+
+@utility bg-header-gradient {
+  background: linear-gradient(135deg, rgba(168,216,255,0.6) 0%, rgba(200,182,255,0.6) 50%, rgba(244,184,212,0.6) 100%);
+}
+
+@utility bg-titlebar-gradient {
+  background: linear-gradient(90deg, #6ac0e0 0%, #9a8adf 50%, #e890b8 100%);
+}
+
+@utility bg-button-gradient {
+  background: linear-gradient(135deg, #b08cff 0%, #f490b4 100%);
+}
+
+@utility bg-rank-gradient {
+  background: linear-gradient(135deg, #6ac0e0, #9a8adf);
+}
+
+@utility text-gradient {
+  background: linear-gradient(90deg, #9a8adf 0%, #e890b8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@utility glass-card {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.65);
+  box-shadow: 0 2px 8px rgba(150, 130, 200, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+@utility glass-header {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background: linear-gradient(135deg, rgba(168,216,255,0.6) 0%, rgba(200,182,255,0.6) 50%, rgba(244,184,212,0.6) 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+@utility pt-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+@utility pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@utility hover-lift {
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(150, 130, 200, 0.15);
+  }
+}
+
+@utility active-scale {
+  transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+  &:active {
+    transform: scale(0.96);
+  }
+}
+
+:root {
+  --background: #fdfcff;
+  --foreground: #3a3a5c;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(200, 182, 255, 0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(244, 144, 180, 0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(106, 192, 224, 0.15) 0px, transparent 50%);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
