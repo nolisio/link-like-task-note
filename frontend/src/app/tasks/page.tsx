@@ -10,6 +10,7 @@ import TaskInput from '../../components/TaskInput';
 import FilterBar from '../../components/FilterBar';
 import TaskList from '../../components/TaskList';
 import BottomNav from '../../components/BottomNav';
+import { motion } from 'framer-motion';
 
 export default function TasksPage() {
   const { token, isLoading } = useAuth();
@@ -65,10 +66,15 @@ export default function TasksPage() {
 
   if (isLoading || (token && initialLoad)) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-[var(--color-primary-dark)] text-xl font-bold animate-pulse tracking-widest flex items-center gap-2">
-          <span>✨</span> LINK TASK <span>✨</span>
-        </div>
+      <div className="min-h-screen flex flex-col">
+        <Header tasks={[]} />
+        <main className="flex-1 w-full max-w-[420px] sm:max-w-2xl mx-auto px-4 mt-8">
+          <div className="space-y-4">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className="glass-card rounded-[16px] h-20 w-full skeleton-shimmer border border-white/20 dark:border-white/5" />
+            ))}
+          </div>
+        </main>
       </div>
     );
   }
@@ -84,7 +90,13 @@ export default function TasksPage() {
   const hasCompleted = tasks.some(t => t.completed);
 
   return (
-    <div className="min-h-screen flex flex-col pb-20 sm:pb-0">
+    <motion.div 
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.4 }}
+      className="min-h-screen flex flex-col pb-20 sm:pb-0"
+    >
       <Header tasks={tasks} />
       
       <main className="flex-1 w-full max-w-[420px] sm:max-w-2xl mx-auto overflow-hidden flex flex-col">
@@ -109,6 +121,6 @@ export default function TasksPage() {
       </main>
 
       <BottomNav filter={filter} setFilter={setFilter} />
-    </div>
+    </motion.div>
   );
 }

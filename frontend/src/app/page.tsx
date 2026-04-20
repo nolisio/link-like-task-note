@@ -15,5 +15,5 @@ export default function Home() {
     }
   }, [token, isLoading, router]);
 
-  return <div className="min-h-screen flex items-center justify-center text-[var(--color-text-main)]">読み込み中...</div>;
+  return <div className="min-h-screen flex items-center justify-center text-color-text-main dark:text-white">読み込み中...</div>;
 }

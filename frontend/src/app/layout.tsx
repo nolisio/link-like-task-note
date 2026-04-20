@@ -3,6 +3,8 @@ import { M_PLUS_Rounded_1c } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "../lib/auth";
 
+import ThemeProvider from "../lib/theme";
+
 const mPlusRounded = M_PLUS_Rounded_1c({
   weight: ["400", "700", "800"],
   subsets: ["latin"],
@@ -30,17 +32,21 @@ export const metadata: Metadata = {
   },
 };
 
+export const dynamic = 'force-dynamic';
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja">
-      <body className={`${mPlusRounded.variable} font-sans antialiased`}>
-        <AuthProvider>
-          {children}
-        </AuthProvider>
+    <html lang="ja" suppressHydrationWarning>
+      <body className={`${mPlusRounded.variable} font-sans antialiased transition-colors duration-300`}>
+        <ThemeProvider>
+          <AuthProvider>
+            {children}
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

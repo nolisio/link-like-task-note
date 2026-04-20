@@ -1,1 +1,1 @@
-rootProject.name = "task-app-backend"
+rootProject.name = "link-like-task-note-backend"
