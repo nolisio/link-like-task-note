@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5433/taskapp
-    username: taskapp
-    password: taskapp_dev
+    url: jdbc:postgresql://localhost:5433/link_like_task_note
+    username: link_like_task_note
+    password: link_like_task_note_dev
   jpa:
     hibernate:
       ddl-auto: update
