@@ -1,5 +1,12 @@
-<!-- BEGIN:nextjs-agent-rules -->
-# This is NOT the Next.js you know
+# ルール
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
-<!-- END:nextjs-agent-rules -->
+- 自分で勝手に判断せず、不明点はすぐに私に聞いて下さい
+- コンポーネントは再利用可能な形で実装すること
+- フォールバックは絶対に禁止
+- もし他のAIツールが必要ならば私に訪ねて
+
+# 実装
+
+- 必ず、コンポーネントごとに分けること
+- 命名は基本的にキャメルケース
+- 各コンポーネントはディレクトリ名で分割構成を維持し、１ファイルの責務を減らして正しく分割する。
