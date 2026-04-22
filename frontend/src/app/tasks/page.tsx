@@ -99,23 +99,23 @@ export default function TasksPage() {
     >
       <Header tasks={tasks} />
       
-      <main className="flex-1 w-full max-w-[420px] sm:max-w-2xl mx-auto overflow-hidden flex flex-col">
-        <div className="sticky top-[148px] z-40 bg-transparent pt-4 pb-2">
+      <main className="flex-1 w-full max-w-[420px] sm:max-w-2xl mx-auto flex flex-col">
+        <div className="bg-white/60 dark:bg-black/20 backdrop-blur-md border-b border-white/40 dark:border-white/10">
           <TaskInput onAdd={handleAddTask} />
         </div>
-        
-        <FilterBar 
-          filter={filter} 
-          setFilter={setFilter} 
+
+        <FilterBar
+          filter={filter}
+          setFilter={setFilter}
           onClearCompleted={handleClearCompleted}
           hasCompleted={hasCompleted}
         />
-        
-        <div className="flex-1 overflow-y-auto px-4 mt-2 sm:mt-4">
-          <TaskList 
-            tasks={filteredTasks} 
-            onUpdate={handleUpdateTask} 
-            onDelete={handleDeleteTask} 
+
+        <div className="flex-1 px-4 mt-2 sm:mt-4">
+          <TaskList
+            tasks={filteredTasks}
+            onUpdate={handleUpdateTask}
+            onDelete={handleDeleteTask}
           />
         </div>
       </main>

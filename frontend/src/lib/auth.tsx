@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User, AuthResponse } from '../types';
-import { api } from './api';
+import { api, UnauthorizedError } from './api';
 
 interface AuthContextType {
   user: User | null;
@@ -24,11 +24,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const initAuth = async () => {
       const storedToken = localStorage.getItem('token');
       if (storedToken) {
-        setToken(storedToken);
         try {
           const userData = await api.getMe();
+          setToken(storedToken);
           setUser(userData);
-        } catch {
+        } catch (err) {
+          if (err instanceof UnauthorizedError) {
+            console.warn('[auth] stored token rejected, clearing');
+          } else {
+            console.error('[auth] initAuth failed', err);
+          }
           localStorage.removeItem('token');
           setToken(null);
           setUser(null);

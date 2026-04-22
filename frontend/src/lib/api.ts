@@ -2,6 +2,13 @@ import { AuthResponse, Task, User, Priority } from '../types';
 
 const API_URL = 'http://localhost:8080/api';
 
+export class UnauthorizedError extends Error {
+  constructor(message = 'Unauthorized') {
+    super(message);
+    this.name = 'UnauthorizedError';
+  }
+}
+
 const getHeaders = () => {
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
   return {
@@ -11,17 +18,18 @@ const getHeaders = () => {
 };
 
 const handleResponse = async (res: Response) => {
-  if (res.status === 401 && typeof window !== 'undefined') {
-    localStorage.removeItem('token');
-    window.location.href = '/login';
-    return null;
+  if (res.status === 401) {
+    if (typeof window !== 'undefined') {
+      console.warn('[api] 401 Unauthorized from', res.url);
+    }
+    throw new UnauthorizedError();
   }
-  
+
   if (!res.ok) {
     const error = await res.text().catch(() => 'An error occurred');
     throw new Error(error || res.statusText);
   }
-  
+
   if (res.status === 204) return;
   return res.json();
 };
