@@ -9,6 +9,7 @@ interface TaskListProps {
   tasks: Task[];
   onUpdate: (id: number, updates: Partial<Task>) => Promise<void>;
   onDelete: (id: number) => Promise<void>;
+  onEdit: (task: Task) => void;
 }
 
 const listVariants = {
@@ -26,7 +27,7 @@ const itemVariants = {
   visible: { opacity: 1, y: 0 },
 };
 
-export default function TaskList({ tasks, onUpdate, onDelete }: TaskListProps) {
+export default function TaskList({ tasks, onUpdate, onDelete, onEdit }: TaskListProps) {
   if (tasks.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-12 text-color-text-muted">
@@ -52,6 +53,7 @@ export default function TaskList({ tasks, onUpdate, onDelete }: TaskListProps) {
               task={task}
               onUpdate={onUpdate}
               onDelete={onDelete}
+              onEdit={onEdit}
             />
           ))}
         </AnimatePresence>

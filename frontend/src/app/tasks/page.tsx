@@ -4,9 +4,11 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../lib/auth';
 import { api } from '../../lib/api';
-import { Task, Priority, FilterType } from '../../types';
+import { Task, FilterType, TaskCreateInput } from '../../types';
 import Header from '../../components/Header';
 import TaskInput from '../../components/TaskInput';
+import TaskCreateModal from '../../components/TaskCreateModal';
+import TaskEditModal from '../../components/TaskEditModal';
 import FilterBar from '../../components/FilterBar';
 import TaskList from '../../components/TaskList';
 import BottomNav from '../../components/BottomNav';
@@ -19,6 +21,8 @@ export default function TasksPage() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [filter, setFilter] = useState<FilterType>('all');
   const [initialLoad, setInitialLoad] = useState(true);
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [editingTask, setEditingTask] = useState<Task | null>(null);
 
   useEffect(() => {
     if (!isLoading && !token) {
@@ -41,8 +45,8 @@ export default function TasksPage() {
     fetchTasks();
   }, [token]);
 
-  const handleAddTask = async (title: string, priority: Priority) => {
-    const newTask = await api.createTask(title, priority);
+  const handleCreateTask = async (input: TaskCreateInput) => {
+    const newTask = await api.createTask(input);
     setTasks(prev => [newTask, ...prev]);
   };
 
@@ -101,8 +105,14 @@ export default function TasksPage() {
       
       <main className="flex-1 w-full max-w-[420px] sm:max-w-2xl mx-auto flex flex-col">
         <div className="bg-white/60 dark:bg-black/20 backdrop-blur-md border-b border-white/40 dark:border-white/10">
-          <TaskInput onAdd={handleAddTask} />
+          <TaskInput onOpenCreate={() => setIsCreateOpen(true)} />
         </div>
+
+        <TaskCreateModal
+          open={isCreateOpen}
+          onClose={() => setIsCreateOpen(false)}
+          onSubmit={handleCreateTask}
+        />
 
         <FilterBar
           filter={filter}
@@ -116,9 +126,17 @@ export default function TasksPage() {
             tasks={filteredTasks}
             onUpdate={handleUpdateTask}
             onDelete={handleDeleteTask}
+            onEdit={setEditingTask}
           />
         </div>
       </main>
+
+      <TaskEditModal
+        open={editingTask !== null}
+        task={editingTask}
+        onClose={() => setEditingTask(null)}
+        onSubmit={handleUpdateTask}
+      />
 
       <BottomNav filter={filter} setFilter={setFilter} />
     </motion.div>

@@ -1,5 +1,7 @@
 export type Priority = 'HIGH' | 'MEDIUM' | 'LOW';
 export type FilterType = 'all' | 'active' | 'completed';
+export type RecurrenceType = 'ONCE' | 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'CUSTOM';
+export type RecurrenceUnit = 'DAY' | 'WEEK' | 'MONTH';
 
 export interface User {
   id: number;
@@ -13,8 +15,21 @@ export interface Task {
   completed: boolean;
   priority: Priority;
   dueDate: string | null;
+  recurrenceType: RecurrenceType;
+  customIntervalValue: number | null;
+  customIntervalUnit: RecurrenceUnit | null;
+  lastResetAt: string | null;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface TaskCreateInput {
+  title: string;
+  priority: Priority;
+  dueDate?: string | null;
+  recurrenceType: RecurrenceType;
+  customIntervalValue?: number | null;
+  customIntervalUnit?: RecurrenceUnit | null;
 }
 
 export interface AuthResponse {

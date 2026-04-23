@@ -1,10 +1,18 @@
 import { test as base, expect, Page, Route } from '@playwright/test';
 
+type RecurrenceType = 'ONCE' | 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'CUSTOM';
+type RecurrenceUnit = 'DAY' | 'WEEK' | 'MONTH';
+
 type Task = {
   id: number;
   title: string;
   completed: boolean;
   priority: 'HIGH' | 'MEDIUM' | 'LOW';
+  dueDate: string | null;
+  recurrenceType: RecurrenceType;
+  customIntervalValue: number | null;
+  customIntervalUnit: RecurrenceUnit | null;
+  lastResetAt: string | null;
   createdAt: string;
   updatedAt: string;
 };
@@ -21,24 +29,38 @@ export type MockState = {
   token: string;
 };
 
+const defaultTask = (overrides: Partial<Task>): Task => ({
+  id: 0,
+  title: '',
+  completed: false,
+  priority: 'MEDIUM',
+  dueDate: null,
+  recurrenceType: 'ONCE',
+  customIntervalValue: null,
+  customIntervalUnit: null,
+  lastResetAt: null,
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
+  ...overrides,
+});
+
 export const createMockState = (overrides: Partial<MockState> = {}): MockState => ({
   tasks: [
-    {
+    defaultTask({
       id: 1,
       title: 'モックタスク1',
-      completed: false,
       priority: 'HIGH',
       createdAt: new Date('2026-04-20T10:00:00Z').toISOString(),
       updatedAt: new Date('2026-04-20T10:00:00Z').toISOString(),
-    },
-    {
+    }),
+    defaultTask({
       id: 2,
       title: 'モックタスク2',
       completed: true,
       priority: 'LOW',
       createdAt: new Date('2026-04-20T09:00:00Z').toISOString(),
       updatedAt: new Date('2026-04-20T09:00:00Z').toISOString(),
-    },
+    }),
   ],
   user: { id: 1, username: 'testuser', email: 'test@example.com' },
   token: 'mock-jwt-token-for-testing',
@@ -95,16 +117,27 @@ export async function mockBackend(page: Page, state: MockState): Promise<void> {
     }
 
     if (path === '/tasks' && method === 'POST') {
-      const body = route.request().postDataJSON() as { title: string; priority: Task['priority'] };
+      const body = route.request().postDataJSON() as {
+        title: string;
+        priority: Task['priority'];
+        recurrenceType?: RecurrenceType;
+        customIntervalValue?: number | null;
+        customIntervalUnit?: RecurrenceUnit | null;
+      };
       const now = new Date().toISOString();
-      const newTask: Task = {
+      const recurrenceType = body.recurrenceType ?? 'ONCE';
+      const newTask: Task = defaultTask({
         id: Math.max(0, ...state.tasks.map((t) => t.id)) + 1,
         title: body.title,
         priority: body.priority,
         completed: false,
+        recurrenceType,
+        customIntervalValue: recurrenceType === 'CUSTOM' ? (body.customIntervalValue ?? null) : null,
+        customIntervalUnit: recurrenceType === 'CUSTOM' ? (body.customIntervalUnit ?? null) : null,
+        lastResetAt: recurrenceType === 'ONCE' ? null : now,
         createdAt: now,
         updatedAt: now,
-      };
+      });
       state.tasks.unshift(newTask);
       await route.fulfill({
         status: 200,

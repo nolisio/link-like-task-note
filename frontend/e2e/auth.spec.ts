@@ -15,7 +15,7 @@ test.describe('ログインフロー（ロールバック回帰防止）', () =>
     await page.waitForTimeout(1500);
     await expect(page).toHaveURL(/\/tasks$/);
 
-    await expect(page.getByPlaceholder('新しいタスクを入力...')).toBeVisible();
+    await expect(page.getByText('新しいタスクを追加...')).toBeVisible();
   });
 
   test('トークン保持状態で /tasks に直接アクセスできる', async ({ page, mockState }) => {
@@ -26,7 +26,7 @@ test.describe('ログインフロー（ロールバック回帰防止）', () =>
     await page.goto('/tasks');
 
     await expect(page).toHaveURL(/\/tasks$/);
-    await expect(page.getByPlaceholder('新しいタスクを入力...')).toBeVisible({ timeout: 5000 });
+    await expect(page.getByText('新しいタスクを追加...')).toBeVisible({ timeout: 5000 });
   });
 
   test('未認証で /tasks にアクセスすると /login にリダイレクト', async ({ page }) => {

@@ -1,4 +1,4 @@
-import { AuthResponse, Task, User, Priority } from '../types';
+import { AuthResponse, Task, User, TaskCreateInput } from '../types';
 
 const API_URL = 'http://localhost:8080/api';
 
@@ -67,11 +67,18 @@ export const api = {
     return handleResponse(res);
   },
 
-  async createTask(title: string, priority: Priority = 'MEDIUM', dueDate?: string | null): Promise<Task> {
+  async createTask(input: TaskCreateInput): Promise<Task> {
     const res = await fetch(`${API_URL}/tasks`, {
       method: 'POST',
       headers: getHeaders(),
-      body: JSON.stringify({ title, priority, dueDate }),
+      body: JSON.stringify({
+        title: input.title,
+        priority: input.priority,
+        dueDate: input.dueDate ?? null,
+        recurrenceType: input.recurrenceType,
+        customIntervalValue: input.customIntervalValue ?? null,
+        customIntervalUnit: input.customIntervalUnit ?? null,
+      }),
     });
     return handleResponse(res);
   },

@@ -37,6 +37,20 @@ public class Task {
     @Column(name = "due_date")
     private LocalDate dueDate;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "recurrence_type", nullable = false)
+    private RecurrenceType recurrenceType = RecurrenceType.ONCE;
+
+    @Column(name = "custom_interval_value")
+    private Integer customIntervalValue;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "custom_interval_unit")
+    private RecurrenceUnit customIntervalUnit;
+
+    @Column(name = "last_reset_at")
+    private LocalDateTime lastResetAt;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -97,6 +111,38 @@ public class Task {
 
     public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
+    }
+
+    public RecurrenceType getRecurrenceType() {
+        return recurrenceType;
+    }
+
+    public void setRecurrenceType(RecurrenceType recurrenceType) {
+        this.recurrenceType = recurrenceType;
+    }
+
+    public Integer getCustomIntervalValue() {
+        return customIntervalValue;
+    }
+
+    public void setCustomIntervalValue(Integer customIntervalValue) {
+        this.customIntervalValue = customIntervalValue;
+    }
+
+    public RecurrenceUnit getCustomIntervalUnit() {
+        return customIntervalUnit;
+    }
+
+    public void setCustomIntervalUnit(RecurrenceUnit customIntervalUnit) {
+        this.customIntervalUnit = customIntervalUnit;
+    }
+
+    public LocalDateTime getLastResetAt() {
+        return lastResetAt;
+    }
+
+    public void setLastResetAt(LocalDateTime lastResetAt) {
+        this.lastResetAt = lastResetAt;
     }
 
     public User getUser() {

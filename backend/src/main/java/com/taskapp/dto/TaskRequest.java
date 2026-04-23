@@ -1,6 +1,8 @@
 package com.taskapp.dto;
 
 import com.taskapp.model.Priority;
+import com.taskapp.model.RecurrenceType;
+import com.taskapp.model.RecurrenceUnit;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
@@ -11,6 +13,9 @@ public record TaskRequest(
         String title,
         Priority priority,
         Boolean completed,
-        LocalDate dueDate
+        LocalDate dueDate,
+        RecurrenceType recurrenceType,
+        Integer customIntervalValue,
+        RecurrenceUnit customIntervalUnit
 ) {
 }
