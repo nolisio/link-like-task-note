@@ -6,6 +6,7 @@ import { X } from 'lucide-react';
 import { Priority, RecurrenceType, RecurrenceUnit, Task } from '../../types';
 import PrioritySelector from '../taskForm/PrioritySelector';
 import RecurrenceSelector from '../taskForm/RecurrenceSelector';
+import DeadlinePicker from '../taskForm/DeadlinePicker';
 
 interface TaskEditModalProps {
   open: boolean;
@@ -20,6 +21,7 @@ export default function TaskEditModal({ open, task, onClose, onSubmit }: TaskEdi
   const [recurrenceType, setRecurrenceType] = useState<RecurrenceType>('ONCE');
   const [customIntervalValue, setCustomIntervalValue] = useState<number>(1);
   const [customIntervalUnit, setCustomIntervalUnit] = useState<RecurrenceUnit>('DAY');
+  const [dueDate, setDueDate] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
@@ -29,6 +31,7 @@ export default function TaskEditModal({ open, task, onClose, onSubmit }: TaskEdi
     setRecurrenceType(task.recurrenceType);
     setCustomIntervalValue(task.customIntervalValue ?? 1);
     setCustomIntervalUnit(task.customIntervalUnit ?? 'DAY');
+    setDueDate(task.dueDate ?? null);
     setSubmitting(false);
   }, [open, task]);
 
@@ -53,6 +56,7 @@ export default function TaskEditModal({ open, task, onClose, onSubmit }: TaskEdi
       recurrenceType,
       customIntervalValue: recurrenceType === 'CUSTOM' ? customIntervalValue : null,
       customIntervalUnit: recurrenceType === 'CUSTOM' ? customIntervalUnit : null,
+      dueDate,
     };
 
     setSubmitting(true);
@@ -83,7 +87,7 @@ export default function TaskEditModal({ open, task, onClose, onSubmit }: TaskEdi
             animate={{ y: 0, opacity: 1, scale: 1 }}
             exit={{ y: 40, opacity: 0, scale: 0.98 }}
             transition={{ type: 'spring', stiffness: 360, damping: 28 }}
-            className="glass-card w-full max-w-md rounded-[24px] p-5 bg-white/90 dark:bg-neutral-900/90 border border-white/50 dark:border-white/10 shadow-2xl flex flex-col gap-4"
+            className="glass-card w-full max-w-md rounded-[24px] p-5 bg-white/90 dark:bg-neutral-900/90 border border-white/50 dark:border-white/10 shadow-2xl flex flex-col gap-4 max-h-[90vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
             onSubmit={handleSubmit}
           >
@@ -122,6 +126,8 @@ export default function TaskEditModal({ open, task, onClose, onSubmit }: TaskEdi
               onChangeCustomValue={setCustomIntervalValue}
               onChangeCustomUnit={setCustomIntervalUnit}
             />
+
+            <DeadlinePicker value={dueDate} onChange={setDueDate} />
 
             <div className="flex items-center justify-end gap-2 pt-2">
               <button

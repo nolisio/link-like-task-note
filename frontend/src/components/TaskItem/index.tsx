@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Check, Edit2, Trash2 } from 'lucide-react';
 import clsx from 'clsx';
 import RecurrenceBadge from './RecurrenceBadge';
+import DeadlineBadge from './DeadlineBadge';
 import Sparkles from './Sparkles';
 
 interface TaskItemProps {
@@ -99,6 +100,7 @@ export default function TaskItem({ task, onUpdate, onDelete, onEdit }: TaskItemP
               customIntervalValue={task.customIntervalValue}
               customIntervalUnit={task.customIntervalUnit}
             />
+            <DeadlineBadge dueDate={task.dueDate} completed={task.completed} />
           </div>
 
           <p
