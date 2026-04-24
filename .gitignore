@@ -34,3 +34,6 @@ Thumbs.db
 
 # Playwright MCP temporary outputs
 .playwright-mcp/
+
+# repo-root screenshots (verification artifacts)
+/*.png
