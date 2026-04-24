@@ -13,8 +13,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Entity
 @Table(name = "tasks")
@@ -35,7 +35,7 @@ public class Task {
     private Priority priority = Priority.MEDIUM;
 
     @Column(name = "due_date")
-    private LocalDate dueDate;
+    private OffsetDateTime dueDate;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "recurrence_type", nullable = false)
@@ -105,11 +105,11 @@ public class Task {
         this.priority = priority;
     }
 
-    public LocalDate getDueDate() {
+    public OffsetDateTime getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(LocalDate dueDate) {
+    public void setDueDate(OffsetDateTime dueDate) {
         this.dueDate = dueDate;
     }
 
